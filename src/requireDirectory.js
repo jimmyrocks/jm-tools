@@ -6,7 +6,7 @@ module.exports = function (directory, blackList, whiteList) {
   var returnValue = {};
   fs.readdirSync(directory).forEach(function (file) {
     var match = file.match(regexp);
-    if (match && blackList.indexOf(file) === -1 && (!whiteList || whiteList.indexOf(file) > -1)) {
+    if (match && (!blackList || blackList.indexOf(file) === -1) && (!whiteList || whiteList.indexOf(file) > -1)) {
       returnValue[match[1]] = require(path.resolve(path.join(directory, file)));
     }
   });
