@@ -4,12 +4,14 @@ var Immutable = require('immutable');
 
 var ResultDb = function () {
   var db = Immutable.Map();
+  var keys = [];
   return {
     'get': function (key) {
       return db.get(key);
     },
     'set': function (key, value) {
       db = db.set(key, value);
+      keys.push(key);
       return value;
     },
     'addStat': function (key, val) {
@@ -20,7 +22,14 @@ var ResultDb = function () {
       return stat;
     },
     'report': function () {
-      return db.toJS();
+      var report = db.toJS();
+      var returnValue = keys.map(function (task) {
+        return report[task];
+      });
+      Object.keys(report).forEach(function (key) {
+        returnValue[key] = report[key];
+      });
+      return returnValue;
     }
   };
 };
@@ -96,7 +105,9 @@ module.exports = function (list, taskName, verbose, errorArray) {
           var end = new Date().getTime();
           if (sublist[0].name && parseInt(sublist[0].name, 10).toString() !== sublist[0].name.toString()) {
             messages.set(sublist[0].name.toString(), msg);
-            messages.addStat(sublist[0].name.toString(), (end - start) + 'ms');
+            if (verbose) {
+              messages.addStat(sublist[0].name.toString(), (end - start) + 'ms');
+            }
           }
           nextList = sublist.slice(1);
           if (nextList.length > 0) {
