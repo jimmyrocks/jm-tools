@@ -38,7 +38,7 @@ module.exports = function (list, taskName, verbose, errorArray) {
   return new Promise(function (resolve, reject) {
     var exec = function (sublist, msgList, callback) {
       // Keep all callbacks truly asynchronous (https://howtonode.org/understanding-process-next-tick)
-      process.nextTick(function () {
+      setImmediate(function () {
         var nextList = [];
         var params = Array.isArray(sublist[0].params) ? sublist[0].params : [sublist[0].params];
         params = applyParams(params, list, msgList);
