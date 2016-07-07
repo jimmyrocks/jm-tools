@@ -126,7 +126,7 @@ module.exports = function (list, taskName, verbose, errorArray) {
       // TODO: This can cause stack overflows, come up with a better way to run this
       // It might require some cool trickery with Promise.all on some functions
       exec(list, messages, function (e, r) {
-        var resolveValue;
+        var resolveValue = {};
         if (e) {
           resolveValue = errorArray ? e : e[e.length - 1];
           resolveValue.taskName = taskName;
