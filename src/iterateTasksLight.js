@@ -128,7 +128,7 @@ module.exports = function (list, taskName, verbose, errorArray) {
       exec(list, messages, function (e, r) {
         var resolveValue = {};
         if (e) {
-          resolveValue = errorArray ? e : e[e.length - 1];
+          resolveValue = errorArray ? e : (e[e.length - 1] || e);
           resolveValue.taskName = taskName;
           reject(resolveValue);
         } else {
