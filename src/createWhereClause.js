@@ -1,3 +1,4 @@
+var arrayify = require('./arrayify');
 var getJsType = require('./getJsType');
 var md5 = require('./md5');
 var normalizeToType = require('./normalizeToType');
@@ -14,7 +15,10 @@ module.exports = function (whereObj, availableColumns, options) {
     'ne': '!=',
     'eqNull': 'IS',
     'neNull': 'IS NOT',
-    'like': 'LIKE'
+    'like': 'LIKE',
+    'ilike': 'ILIKE',
+    'in': 'IN',
+    'nin': 'NOT IN'
   };
   var join = function (statementsToJoin, orJoin) {
     var joiner = orJoin ? 'OR' : 'AND';
@@ -39,7 +43,16 @@ module.exports = function (whereObj, availableColumns, options) {
         // Allow transformations (like casts or upper/lower kind of things)
         fieldVal = surroundValues.apply(this, [fieldVal].concat(options.transforms[field].from));
       }
-      return fieldVal + surroundValues(operator, ' ') + surroundValues(valueMd5, '{{', '}}');
+      if (operator === 'IN' || operator === 'NOT IN') {
+        var valuesMd5 = arrayify(value).map(function (val) {
+          var newVal = md5(normalizeToType(val) + getJsType(val));
+          whereReplacers[newVal] = val;
+          return md5(normalizeToType(val) + getJsType(val));
+        });
+        return fieldVal + surroundValues(operator, ' ') + surroundValues(surroundValues(valuesMd5, '{{', '}}').join(', '), '(', ')');
+      } else {
+        return fieldVal + surroundValues(operator, ' ') + surroundValues(valueMd5, '{{', '}}');
+      }
     } else {
       return undefined;
     }
