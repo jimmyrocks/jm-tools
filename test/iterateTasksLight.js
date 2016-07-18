@@ -59,7 +59,7 @@ module.exports = [{
   'operator': 'custom',
   'customTest': customTest,
   'expected': true
-}, {
+}/*, {
   'name': 'lightTest10000',
   'task': test,
   'params': [true, 10000],
@@ -73,4 +73,4 @@ module.exports = [{
   'operator': 'custom',
   'customTest': customTest,
   'expected': true
-}];
+}*/];
