@@ -99,6 +99,14 @@ var tests = [{
     }
   },
   'result': '("status" NOT IN (\'P\', \'D\'))'
+}, {
+  'param': {
+    'KEY_A': 'Value A',
+    'KEY_WITH_IN': {
+      '$in': ['Value A', 'Value B', 'Value C']
+    }
+  },
+  'result': '("KEY_A" = \'Value A\' AND "KEY_WITH_IN" IN (\'Value A\', \'Value B\', \'Value C\'))'
 }];
 
 var customTest = function (res) {

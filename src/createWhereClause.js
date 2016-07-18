@@ -29,7 +29,6 @@ module.exports = function (whereObj, availableColumns, options) {
   };
   var createStatement = function (field, operator, value) {
     var valueMd5 = md5(normalizeToType(value) + getJsType(value));
-    whereReplacers[valueMd5] = value;
     if (value === null) {
       if (operator === '=') {
         operator = 'IS';
@@ -51,6 +50,7 @@ module.exports = function (whereObj, availableColumns, options) {
         });
         return fieldVal + surroundValues(operator, ' ') + surroundValues(surroundValues(valuesMd5, '{{', '}}').join(', '), '(', ')');
       } else {
+        whereReplacers[valueMd5] = value;
         return fieldVal + surroundValues(operator, ' ') + surroundValues(valueMd5, '{{', '}}');
       }
     } else {
