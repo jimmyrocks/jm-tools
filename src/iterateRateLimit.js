@@ -1,4 +1,5 @@
 var iterateTasksLight = require('./iterateTasksLight');
+var arrayify = require('./arrayify');
 var Promise = require('bluebird');
 
 var runAll = function (list) {
@@ -26,8 +27,8 @@ module.exports = function (list, taskName, verbose, errorArray, chunkSize) {
 
   return iterateTasksLight(tasks, taskName, verbose, errorArray).then(function (arrays) {
     var returnArray = [];
-    arrays.forEach(function (arr) {
-      arr.forEach(function (val) {
+    arrayify(arrays).forEach(function (arr) {
+      arrayify(arr).forEach(function (val) {
         returnArray.push(val);
       });
     });
