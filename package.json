@@ -9,7 +9,7 @@
     "bluebird": "3.5.5",
     "chalk": "2.4.2",
     "fandlebars": "git+https://github.com/jimmyrocks/fandlebars#master",
-    "immutable": "3.8.2",
+    "immutable": "3.8.3",
     "json-stringify-pretty-compact": "2.0.0",
     "tape": "4.11.0"
   },
